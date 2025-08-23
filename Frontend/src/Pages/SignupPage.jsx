@@ -6,7 +6,7 @@ import AuthImagePattern from "../Components/AuthImagePattern";
 import toast from "react-hot-toast";
 import { useState } from "react";
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);   // state to show the password and hide the password
   const [formData, setFormData] = useState({        // state which take input form the signup page
     fullName: "",
@@ -152,3 +152,5 @@ export const SignupPage = () => {
     </div>
   );
 }
+
+export default SignupPage;
