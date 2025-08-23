@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Message from "../models/message.model.js";
 
 // Function to get All users to show in the sidebar except itself
 export const getUsersForSidebar = async (req, res) =>{
@@ -17,7 +18,22 @@ export const getUsersForSidebar = async (req, res) =>{
 
 // Function to fetch all messages bw loggedInUser and his friend
 export const getMessages = async (req, res) =>{
+    try {
+        const {id: userToChatId} = req.params;    // id for the user to which message we want
+        const myId = req.user._id;     // user currently want to see his conversation with his friend
 
+        const messages = await Message.find({      // filter: it will fetch all the message bw both of us 
+            $or: [
+                {senderId: myId, recieverId: userToChatId},
+                {senderId: userToChatId, recieverId: myId}
+            ]
+        });
+
+        res.status(200).json(messages);
+    } catch (error) {
+        console.log("Error in getMessages controller: ", error.message);
+        res.status(500).json({error: "Internal Server error"});
+    }
 }
 
 
