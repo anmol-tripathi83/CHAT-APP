@@ -3,7 +3,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import { HomePage }  from "./Pages/HomePage";      // export default => HomePage and export only => {HomePage}
-import { SignupPage } from "./Pages/SignupPage";
+import { SignupPage } from "./Pages/SignUpPage.jsx";
 import { SettingPage } from "./Pages/SettingPage";
 import { ProfilePage } from "./Pages/ProfilePage";
 import LoginPage from "./Pages/LoginPage";
@@ -11,7 +11,6 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import {Loader} from "lucide-react";
 import { Toaster } from "react-hot-toast";
-
 
 
 const App = () => {

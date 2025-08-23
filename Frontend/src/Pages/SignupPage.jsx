@@ -1,9 +1,10 @@
-import { useState } from "react"
+// import { useState } from "react"
 import { useAuthStore } from "../store/useAuthStore";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import AuthImagePattern from "../Components/AuthImagePattern";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 export const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);   // state to show the password and hide the password
