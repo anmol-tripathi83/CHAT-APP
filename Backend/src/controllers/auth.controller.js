@@ -1,6 +1,7 @@
 import { generateToken } from "../lib/utills.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import cloudinary from "../lib/cloudinary.js";
 
 
 export const signup = async (req, res)=>{
@@ -94,7 +95,26 @@ export const logout = (req, res)=>{
 
 
 export const updateProfile = async (req, res) => {
+    try {
+        const {profilePic} = req.body;
+        const userId = req.user._id;       // userDetails given by the protectRoute middleware(auth.middleware.js)
 
+        // if profilePic is not provided
+        if(!profilePic){
+            return res.status(400).json({message: "Profile pic is required"});
+        }
+
+        // if pic is provided then upload it to the cloudinary
+        const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+        // now update it to the User DB(instead of image URL added)
+        const updatedUser = await User.findByIdAndUpdate(userId, {profilePic: uploadResponse.secure_url}, {new: true});   // {new:true} due to this it return latest updated user object
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.log("Error in update profile controller:", error.message);
+        res.status(500).json({error: "Internal Server error"});
+    }
 }
 
 
