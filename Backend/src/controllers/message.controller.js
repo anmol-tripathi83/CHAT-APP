@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
+import cloudinary from "../lib/cloudinary.js";
 
 // Function to get All users to show in the sidebar except itself
 export const getUsersForSidebar = async (req, res) =>{
@@ -39,5 +40,32 @@ export const getMessages = async (req, res) =>{
 
 // Function to send the messages to the friend
 export const sendMessage = async (req, res) =>{
+    try {
+        const {text, image} = req.body;
+        const {id : recieverId} = req.params;     // getting id from params renaming it to be more readable
+        const senderId = req.user._id;
 
+        let imageUrl;
+        if(image){    // if image in the message
+            // upload base64 image to the cloudinary
+            const uploadResponse = await cloudinary.uploader.upload(image);
+            imageUrl = uploadResponse.secure_url;
+        }
+
+        const newMessage = new Message({
+            senderId,
+            recieverId,
+            text,
+            image: imageUrl
+        });
+
+        await newMessage.save();
+
+        // todo: realtime functionality goes here => socket.io
+
+        res.status(201).json(newMessage);
+    } catch (error) {
+        console.log("Error in send Message controller: ", error.message);
+        res.status(500).json({error: "Internal Server error"});
+    }
 }
