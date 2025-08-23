@@ -1,6 +1,9 @@
+import { useAuthStore } from "../store/useAuthStore";
+
 
 export const ProfilePage = () => {
-  return (
-    <div>ProfilePage</div>
-  )
+    const { authUser }  = useAuthStore();
+    return (
+        <div>ProfilePage</div>
+    )
 }
