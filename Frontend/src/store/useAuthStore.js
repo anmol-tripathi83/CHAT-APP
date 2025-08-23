@@ -43,10 +43,12 @@ export const useAuthStore = create((set) =>({        // this object is our initi
         set({ isLoggingIn: true });
         try {
             const res = await axiosInstance.post("/auth/login", data);
+            console.log("Login response:", res);  // 👈 check here
             set({ authUser: res.data });
             toast.success("Logged in successfully");
         } catch (error) {
-            toast.error(error.response.data.message);
+            console.log("Error in login store:", error);  // 👈 log full error
+            toast.error(error?.response?.data?.message || "Something went wrong");
         } finally {
             set({ isLoggingIn: false });
         }
