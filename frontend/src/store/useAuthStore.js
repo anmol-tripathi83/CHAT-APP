@@ -100,10 +100,19 @@ export const useAuthStore = create((set, get) =>({        // this object is our 
         const {authUser} = get();
         if(!authUser || get().socket?.connected) return; 
 
-        const socket = io(Base_URL);
+        const socket = io(Base_URL, {     // for online users functionality
+            query: {
+                userId: authUser._id,
+            },
+        });
         socket.connect();
         // update the state
         set({socket: socket});
+
+        // lsitening this event once we are loginned
+        socket.on("getOnlineUsers", (userIds) => {      // function should match as in backend(socket.js)
+        set({ onlineUsers: userIds });
+    });
     },
     
     disconnectSocket: () =>{
