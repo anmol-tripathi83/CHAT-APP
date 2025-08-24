@@ -1,0 +1,13 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "1) npm init -y\r 2) npm i express mongoose dotenv jsonwebtoken bcryptjs cookie-parser cloudinary socket.io   => packages intstall for backend\r 3) IN package.json:  add nodemon as dev and module as type(so that can use import instead of export)\r 4) Setup of index.js with connection with mongoDB",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
