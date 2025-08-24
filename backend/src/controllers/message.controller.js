@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 // Function to get All users to show in the sidebar except itself
 export const getUsersForSidebar = async (req, res) =>{
@@ -42,7 +43,7 @@ export const getMessages = async (req, res) =>{
 export const sendMessage = async (req, res) =>{
     try {
         const {text, image} = req.body;
-        const {id : recieverId} = req.params;     // getting id from params renaming it to be more readable
+        const {id : receiverId} = req.params;     // getting id from params renaming it to be more readable
         const senderId = req.user._id;
 
         let imageUrl;
@@ -54,14 +55,19 @@ export const sendMessage = async (req, res) =>{
 
         const newMessage = new Message({
             senderId,
-            recieverId,
+            receiverId,
             text,
             image: imageUrl
         });
 
         await newMessage.save();
 
-        // todo: realtime functionality goes here => socket.io
+        // realtime functionality goes here => socket.io
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {      // if user is online then send the msg in realtime
+            // unicast to receiver
+            io.to(receiverSocketId).emit("newMessage", newMessage);
+        }
 
         res.status(201).json(newMessage);
     } catch (error) {
