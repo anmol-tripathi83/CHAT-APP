@@ -8,8 +8,8 @@ export const useAuthStore = create((set) =>({        // this object is our initi
     isSigningUp: false,    // tells whether user is signing or not
     isLoggingIn: false,    // tells whether user is logging or not
     isUpdatingProfile: false,   // tells whether user is updating Profile or not
-
-    isCheckingAuth: true,
+    isCheckingAuth: true,        // to check authentic user
+    onlineUsers: [],
 
     checkAuth: async () =>{
         set({ isCheckingAuth: true });

@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
-import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({ //<- this is object which return        // setter and getter  
   messages: [],         // some messages
@@ -28,12 +27,22 @@ export const useChatStore = create((set, get) => ({ //<- this is object which re
       const res = await axiosInstance.get(`/messages/${userId}`);
       set({ messages: res.data });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.statusText);
     } finally {
       set({ isMessagesLoading: false });
     }
   },
 
-  // todo: optimise this one later 
+  sendMessage: async (messageData) => {
+    const { selectedUser, messages } = get();    // to get the state values
+    try {
+      const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, messageData);
+      set({ messages: [...messages, res.data] });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
+  // todo: optimise this one later   
   setSelectedUser: (selectedUser) => set({ selectedUser }),  // use to select the user to show on right
 }));
