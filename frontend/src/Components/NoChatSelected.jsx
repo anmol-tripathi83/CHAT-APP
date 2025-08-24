@@ -17,7 +17,7 @@ const NoChatSelected = () => {
         </div>
 
         {/* Welcome Text */}
-        <h2 className="text-2xl font-bold">Welcome to Connectly!</h2>
+        <h2 className="text-2xl font-bold">Welcome to DriftTalk!</h2>
         <p className="text-base-content/60">
           Select A Conversation From the Sidebar to Start Chatting
         </p>

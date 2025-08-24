@@ -40,4 +40,4 @@ io.on("connection", (socket) => {
   });
 });
 
-export { io, app, server };
+export { io, app, server };   // io variable used in message controller, app used in index.js(server) and server var is user to setup server in index.js
